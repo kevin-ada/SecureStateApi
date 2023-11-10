@@ -21,7 +21,6 @@ class Posts(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
-    image: Mapped[str] = mapped_column(String, nullable=False)
     address: Mapped[str] = mapped_column(String, nullable=False)
     city: Mapped[str] = mapped_column(String, nullable=False)
     state: Mapped[str] = mapped_column(String, nullable=False)
@@ -38,3 +37,13 @@ class Votes(Base):
                                          nullable=False)
     post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True,
                                          nullable=False)
+
+
+class Images(Base):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
+
+    url: Mapped[str] = mapped_column(String, nullable=False)
+
+    posts_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
+
+    product = relationship("Posts")
