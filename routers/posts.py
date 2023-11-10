@@ -39,3 +39,22 @@ def get_one_post(id: int, db: Session = Depends(get_db), current_user: int = Dep
     return post
 
 
+@router.post('/{posts_id}/images', status_code=status.HTTP_201_CREATED, response_model=List[schema.ImageOut])
+def create_post_image(posts_id: int, image: schema.Image, current_user: int = Depends(get_current_user),
+                      db: Session = Depends(get_db)):
+    db_product = db.query(models.Posts).filter(models.Posts.id == posts_id)
+    if not db_product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"There is no Product with that id:{posts_id}")
+    add_image = models.Images(**image.model_dump(), posts_id=posts_id)
+    db.add(add_image)
+    db.commit()
+
+    return [add_image]
+
+
+@router.get("/{posts_id}/images/", response_model=list[schema.RegPost])
+def get_images_for_product(posts_id: int, db: Session = Depends(get_db)):
+    db_product = db.query(models.Posts).filter(models.Posts.id == posts_id).first()
+    if db_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_product.images

@@ -29,6 +29,7 @@ class Posts(Base):
     price: Mapped[float] = mapped_column(Float, nullable=False)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     owner = relationship("Users")
+    images = relationship("Images", back_populates="product")
 
 
 class Votes(Base):
@@ -40,10 +41,11 @@ class Votes(Base):
 
 
 class Images(Base):
+    __tablename__ = "Images"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
 
     url: Mapped[str] = mapped_column(String, nullable=False)
 
     posts_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
 
-    product = relationship("Posts")
+    product = relationship("Posts", back_populates="images")

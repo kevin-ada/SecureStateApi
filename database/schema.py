@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel, EmailStr, conint
 
 
@@ -15,10 +17,13 @@ class UserOut(BaseModel):
     email: EmailStr
 
 
+class Image(BaseModel):
+    url: str
+
+
 class RegPost(BaseModel):
     title: str
     description: str
-    image:str
     price: int
     address: str
     city: str
@@ -29,8 +34,15 @@ class RegPost(BaseModel):
         from_attributes = True
 
 
+
+class ImageOut(BaseModel):
+    url: str
+    product: RegPost
+
+
 class RegOut(RegPost):
     owner: UserOut
+    images: List[Image]
 
 
 class Token(BaseModel):
