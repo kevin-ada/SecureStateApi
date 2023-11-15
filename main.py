@@ -29,4 +29,4 @@ app.add_middleware(
 
 @app.get('/')
 def hello_world():
-    return {"Status": "Ok"}
+    return {"Status": "Valid"}
